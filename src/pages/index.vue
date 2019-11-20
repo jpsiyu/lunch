@@ -5,18 +5,20 @@
         <el-form-item label="已定:">
           <div class="orders">
             <div class="order" v-for="(item, index) in selected" :key="item.id">
-              <span>{{index}}</span>
+              <span>{{index+1}}</span>
               <span class="order-name">{{item.name}}</span>
               <span>{{item.price}}</span>
               <span>{{item.vipPrice}}</span>
             </div>
             <div class="order" v-show="num">
-              <span>茶位</span>
+              <span>{{selected.length+1}}</span>
+              <span class="order-name">茶位</span>
               <span>{{3 * num}}</span>
               <span>{{3 * num}}</span>
             </div>
             <div class="order" v-show="num">
-              <span>米饭</span>
+              <span>{{selected.length+2}}</span>
+              <span class="order-name">米饭</span>
               <span>{{3 * num}}</span>
               <span>{{3 * num}}</span>
             </div>

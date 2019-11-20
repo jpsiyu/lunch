@@ -16,7 +16,7 @@ const dishes = [
   { id: 15, name: '卤水鸭掌', img: require('@/assets/images/15.png'), price: 45, vipPrice: 35 },
   { id: 16, name: '卤水鹅翼', img: require('@/assets/images/16.png'), price: 45, vipPrice: 35 },
   { id: 17, name: '鲍汁鸡脚', img: require('@/assets/images/17.png'), price: 40, vipPrice: 30 },
-  { id: 18, name: '土炮佛跳墙', img: require('@/assets/images/18.png'), price: 248, vipPrice: 80 },
+  { id: 18, name: '土炮佛跳墙', img: require('@/assets/images/18.png'), price: 248, vipPrice: 198 },
   { id: 19, name: '椰子炖鸡', img: require('@/assets/images/19.png'), price: 23, vipPrice: 18 },
   { id: 20, name: '煎蛋时蔬肉片汤', img: require('@/assets/images/20.png'), price: 38, vipPrice: 28 },
   { id: 21, name: '笋壳鱼', img: require('@/assets/images/21.png'), price: 58, vipPrice: 38 },
