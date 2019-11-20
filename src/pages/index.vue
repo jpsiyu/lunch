@@ -58,6 +58,8 @@
 
 <script>
 import config from '@/scripts/config'
+import io from 'socket.io-client'
+
 export default {
   data() {
     return {
@@ -66,6 +68,7 @@ export default {
       selected: [],
     }
   },
+  socket: null,
   computed: {
     orderTotal() {
       let sum = 0
@@ -80,7 +83,7 @@ export default {
     dishes() {
       return config.dishes
     },
-    avg(){
+    avg() {
       const avg = this.num ? this.orderTotal / this.num : this.orderTotal
       return avg.toFixed(2)
     }
@@ -93,9 +96,38 @@ export default {
     }
   },
   mounted() {
-    setInterval(this.getOrderId, 500)
+    //setInterval(this.getOrderId, 500)
+    this.initWebSocket()
   },
   methods: {
+    initWebSocket() {
+      const socket = io('http://localhost:12331')
+      socket.on('connect', () => {
+        console.log('connect')
+      })
+      socket.on('message', (msg) => {
+        console.log('message', msg)
+      })
+      socket.on('disconnect', () => {
+        console.log('disconnect')
+      })
+      socket.on('all', result => {
+        this.handleAll(result)
+      })
+      this.socket = socket
+      socket.emit('all')
+    },
+    handleAll(result) {
+      const dishes = []
+      const { num, orderList } = result
+      orderList.forEach(id => {
+        const target = this.dishes.find(cfg => id === cfg.id)
+        if (target)
+          dishes.push(target)
+      })
+      this.selected = dishes
+      this.num = num
+    },
     getOrderId() {
       this.$axios.get('/api/all')
         .then(res => {
@@ -111,15 +143,18 @@ export default {
         })
     },
     sendOrder(item) {
-      this.$axios.post('/api/order', { id: item.id })
+      this.socket.emit('order', { id: item.id })
+      //this.$axios.post('/api/order', { id: item.id })
     },
 
     sendNum() {
-      this.$axios.post('/api/num', { num: this.num })
+      this.socket.emit('num', { num: this.num })
+      //this.$axios.post('/api/num', { num: this.num })
     },
 
     clearOrder() {
-      this.$axios.post('/api/clear')
+      this.socket.emit('clear')
+      //this.$axios.post('/api/clear')
     },
 
     isSelected(id) {
