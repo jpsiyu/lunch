@@ -29,7 +29,7 @@
       </el-form>
       <el-form label-width="80px" label-position="left" @submit.native.prevent>
         <el-form-item label="人数:">
-          <el-input-number v-model="num" :min="0" :max="100"></el-input-number>
+          <el-input-number v-model="num" :min="0" :max="100" @change="numChange"></el-input-number>
         </el-form-item>
         <el-form-item label="VIP:">
           <el-switch v-model="vip" active-color="#13ce66"></el-switch>
@@ -91,13 +91,6 @@ export default {
       return avg.toFixed(2)
     }
   },
-  watch: {
-    num(val, oldVal) {
-      if (val !== oldVal) {
-        this.sendNum(val)
-      }
-    }
-  },
   mounted() {
     this.initWebSocket()
   },
@@ -126,6 +119,9 @@ export default {
       this.selected = dishes
       this.num = num
     },
+    numChange(value) {
+      this.sendNum()
+     },
     getOrderId() {
       this.$axios.get('/api/all')
         .then(res => {
