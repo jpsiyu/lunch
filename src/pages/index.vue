@@ -96,17 +96,13 @@ export default {
     }
   },
   mounted() {
-    //setInterval(this.getOrderId, 500)
     this.initWebSocket()
   },
   methods: {
     initWebSocket() {
-      const socket = io('http://localhost:12331')
+      const socket = io(this.$common.baseURL)
       socket.on('connect', () => {
         console.log('connect')
-      })
-      socket.on('message', (msg) => {
-        console.log('message', msg)
       })
       socket.on('disconnect', () => {
         console.log('disconnect')
@@ -115,7 +111,6 @@ export default {
         this.handleAll(result)
       })
       this.socket = socket
-      socket.emit('all')
     },
     handleAll(result) {
       const dishes = []
@@ -143,18 +138,15 @@ export default {
         })
     },
     sendOrder(item) {
-      this.socket.emit('order', { id: item.id })
-      //this.$axios.post('/api/order', { id: item.id })
+      this.$axios.post('/api/order', { id: item.id })
     },
 
     sendNum() {
-      this.socket.emit('num', { num: this.num })
-      //this.$axios.post('/api/num', { num: this.num })
+      this.$axios.post('/api/num', { num: this.num })
     },
 
     clearOrder() {
-      this.socket.emit('clear')
-      //this.$axios.post('/api/clear')
+      this.$axios.post('/api/clear')
     },
 
     isSelected(id) {

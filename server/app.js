@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const history = require('connect-history-api-fallback')
 const Order = require('./order')
+const SocketMgr = require('./socket_mgr')
 
 const serverMsg = (result, error, extra) => {
   return { result, error, extra }
@@ -34,20 +35,23 @@ app.get('/api/all', (req, res) => {
 app.post('/api/clear', (req, res) => {
   app.order.clearAll()
   res.send(serverMsg('ok', '', ''))
+  app.socketMgr.broadcast('all', app.order.getAll())
 })
 
 app.post('/api/order', (req, res) => {
   const id = req.body.id
   app.order.receiveOrder(id)
   res.send(serverMsg('ok', '', ''))
+  app.socketMgr.broadcast('all', app.order.getAll())
 })
 
 app.post('/api/num', (req, res) => {
   const num = req.body.num
   app.order.setNum(num)
   res.send(serverMsg('ok', '', ''))
-
+  app.socketMgr.broadcast('all', app.order.getAll())
 })
+
 
 /**
  * websocket
@@ -55,34 +59,20 @@ app.post('/api/num', (req, res) => {
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 io.on('connection', (socket) => {
+  app.socketMgr.add(socket)
   socket.on('connect', () => {
     console.log('connect')
   })
-  socket.on('message', args => {
-    console.log('message', ...args)
-  })
-  socket.on('all', () => {
-    socket.emit('all', app.order.getAll())
-  })
-  socket.on('order', args => {
-    const { id } = args
-    app.order.receiveOrder(id)
-    socket.emit('all', app.order.getAll())
-  })
-  socket.on('num', args => {
-    const { num } = args
-    app.order.setNum(num)
-    socket.emit('all', app.order.getAll())
-  })
-  socket.on('clear', args => {
-    app.order.clearAll()
-    socket.emit('all', app.order.getAll())
-  })
   socket.on('disconnect', () => {
     console.log('disconnect')
+    app.socketMgr.delete(socket)
   })
+  socket.emit('all', app.order.getAll())
 })
 
+app.socketList = []
 app.order = new Order()
+app.socketMgr = new SocketMgr()
+
 const port = 12331
 server.listen(port, () => { consola.info(`Server listening on port ${port}`) })
