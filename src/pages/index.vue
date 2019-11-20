@@ -9,6 +9,7 @@
               <span class="order-name">{{item.name}}</span>
               <span>{{item.price}}</span>
               <span>{{item.vipPrice}}</span>
+              <i class="order-remove el-icon-remove" @click="sendOrder(item)"></i>
             </div>
             <div class="order" v-show="num">
               <span>{{selected.length+1}}</span>
@@ -184,9 +185,18 @@ export default {
 }
 
 .order {
+  position: relative;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #909399;
+}
+
+.order-remove {
+  cursor: pointer;
+  position: absolute;
+  right: -30px;
+  top: 30%;
+  color: #f56c6c;
 }
 
 .order-name {
