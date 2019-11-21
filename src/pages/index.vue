@@ -42,6 +42,7 @@
         </el-form-item>
       </el-form>
       <el-button @click="clearOrder" type="warning" style="margin-top:20px">清空</el-button>
+      <Formula />
     </div>
     <div class="home-right">
       <div class="dish" v-for="(item,index) in dishes" :key="index" @click="sendOrder(item)">
@@ -60,10 +61,12 @@
 </template>
 
 <script>
+import Formula from '@/components/Formula'
 import config from '@/scripts/config'
 import io from 'socket.io-client'
 
 export default {
+  components: {Formula},
   data() {
     return {
       vip: true,
@@ -121,7 +124,7 @@ export default {
     },
     numChange(value) {
       this.sendNum()
-     },
+    },
     getOrderId() {
       this.$axios.get('/api/all')
         .then(res => {
@@ -171,9 +174,10 @@ export default {
   flex: 1;
   min-width: 200px;
   border-right: 1px solid #909399;
-  padding: 10px;
+  padding: 20px 10px;
   height: 100%;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .orders {
