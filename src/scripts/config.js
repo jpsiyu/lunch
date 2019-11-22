@@ -1,7 +1,9 @@
 const dishes = [
-  { id: 1, name: '土炮烧大猪', img: require('@/assets/images/1.png'), price: 55, vipPrice: 45},
+  { id: 999, name: '蒜蓉粉丝蒸圣子王', img: require('@/assets/images/999.png'), price: 22, vipPrice: 22 },
+  { id: 998, name: '水鱼仔', img: require('@/assets/images/998.png'), price: 18.8, vipPrice: 18.8 },
+  { id: 997, name: '紫苏焗围虾', img: require('@/assets/images/997.png'), price: 18.8, vipPrice: 18.8 },
   { id: 2, name: '土炮烧鹅', img: require('@/assets/images/2.png'), price: 68, vipPrice: 48 },
-  { id: 3, name: '深海鱼柳叉烧', img: require('@/assets/images/3.png'), price: 55, vipPrice: 48},
+  { id: 3, name: '深海鱼柳叉烧', img: require('@/assets/images/3.png'), price: 55, vipPrice: 48 },
   { id: 4, name: '手撕鸡', img: require('@/assets/images/4.png'), price: 58, vipPrice: 50 },
   { id: 5, name: '土炮烧乳鸭', img: require('@/assets/images/5.png'), price: 35, vipPrice: 28 },
   { id: 6, name: '蜜汁叉烧', img: require('@/assets/images/6.png'), price: 55, vipPrice: 45 },
