@@ -2,7 +2,6 @@
   <el-collapse class="fm">
     <el-collapse-item name="formula">
       <template slot="title">
-        <span class="fm-tips">最划算</span>
         <img class="fm-gongfu" src="@/assets/gongfu.gif" alt />
       </template>
       <p class="fm-title">定义:</p>
@@ -53,9 +52,5 @@
 
 .fm-gongfu {
   height: 100%;
-}
-
-.fm-tips {
-  word-break: keep-all;
 }
 </style>
