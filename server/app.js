@@ -70,7 +70,6 @@ io.on('connection', (socket) => {
   socket.emit('all', app.order.getAll())
 })
 
-app.socketList = []
 app.order = new Order()
 app.socketMgr = new SocketMgr()
 

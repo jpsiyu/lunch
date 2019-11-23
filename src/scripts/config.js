@@ -94,7 +94,7 @@ const dishes = [
   { id: 91, name: '鹅汁蒸陈村粉', img: require('@/assets/images/91.png'), price: 28, vipPrice: 20 },
   { id: 92, name: '台山黄鳝饭', img: require('@/assets/images/92.png'), price: 58, vipPrice: 48 },
   { id: 93, name: '干炒牛肉河粉', img: require('@/assets/images/93.png'), price: 38, vipPrice: 25 },
-  { id: 94, name: '阳江鹅x煲', img: require('@/assets/images/94.png'), price: 38, vipPrice: 30 },
+  { id: 94, name: '阳江鹅乸饭', img: require('@/assets/images/94.png'), price: 38, vipPrice: 30 },
 ]
 
 export default { dishes } 
