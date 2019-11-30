@@ -82,7 +82,7 @@ const dishes = [
   { id: 79, name: '五柳松子鱼', img: require('@/assets/images/79.png'), price: 38, vipPrice: 30 },
   { id: 80, name: '子萝炒牛肉', img: require('@/assets/images/80.png'), price: 45, vipPrice: 28 },
   { id: 81, name: '芥兰炒烧肉', img: require('@/assets/images/81.png'), price: 48, vipPrice: 38 },
-  { id: 82, name: '鱼香扣肉煲', img: require('@/assets/images/82.png'), price: 55, vipPrice: 45 },
+  { id: 82, name: '香芋扣肉煲', img: require('@/assets/images/82.png'), price: 55, vipPrice: 45 },
   { id: 83, name: '干蒸上汤桑叶', img: require('@/assets/images/83.png'), price: 38, vipPrice: 28 },
   { id: 84, name: '鸡汁蒸珍珠菌', img: require('@/assets/images/84.png'), price: 38, vipPrice: 30 },
   { id: 85, name: '盐水菜心', img: require('@/assets/images/85.png'), price: 28, vipPrice: 25 },
