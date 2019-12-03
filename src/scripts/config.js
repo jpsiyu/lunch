@@ -1,6 +1,6 @@
 const dishes = [
-  { id: 999, name: '蒜蓉粉丝蒸圣子王', img: require('@/assets/images/999.png'), price: 22, vipPrice: 22 },
-  { id: 998, name: '水鱼仔', img: require('@/assets/images/998.png'), price: 18.8, vipPrice: 18.8 },
+  { id: 999, name: '椒盐鱼件', img: require('@/assets/images/999.png'), price: 18.8, vipPrice: 18.8 },
+  { id: 998, name: '云吞鱼茸烩冬瓜', img: require('@/assets/images/998.png'), price: 18.8, vipPrice: 18.8 },
   { id: 997, name: '紫苏焗围虾', img: require('@/assets/images/997.png'), price: 18.8, vipPrice: 18.8 },
   { id: 2, name: '土炮烧鹅', img: require('@/assets/images/2.png'), price: 68, vipPrice: 48 },
   { id: 3, name: '深海鱼柳叉烧', img: require('@/assets/images/3.png'), price: 55, vipPrice: 48 },
