@@ -52,6 +52,12 @@ app.post('/api/num', (req, res) => {
   app.socketMgr.broadcast('all', app.order.getAll())
 })
 
+app.post('/api/tea', (req, res) => {
+  const tea = req.body.tea
+  app.order.setTea(tea)
+  res.send(serverMsg('ok', '', ''))
+  app.socketMgr.broadcast('all', app.order.getAll())
+})
 
 /**
  * websocket

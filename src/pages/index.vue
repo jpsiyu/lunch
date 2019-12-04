@@ -32,14 +32,14 @@
           <el-input-number v-model="num" :min="0" :max="100" @change="numChange"></el-input-number>
         </el-form-item>
         <el-form-item label="选茶:">
-          <el-radio v-model="tea" label="1">普洱</el-radio>
-          <el-radio v-model="tea" label="2">铁观音</el-radio>
+          <el-radio v-model="tea" label="1" @change="sendTea">普洱</el-radio>
+          <el-radio v-model="tea" label="2" @change="sendTea">铁观音</el-radio>
         </el-form-item>
         <el-form-item label="VIP:">
           <el-switch v-model="vip"></el-switch>
         </el-form-item>
       </el-form>
-      <el-form :inline="true"> 
+      <el-form :inline="true">
         <el-form-item label="总价:">
           <span class="home-total">{{orderTotal | fixed2}}</span>
         </el-form-item>
@@ -125,7 +125,7 @@ export default {
     },
     handleAll(result) {
       const dishes = []
-      const { num, orderList } = result
+      const { num, orderList, tea } = result
       orderList.forEach(id => {
         const target = this.dishes.find(cfg => id === cfg.id)
         if (target)
@@ -133,23 +133,10 @@ export default {
       })
       this.selected = dishes
       this.num = num
+          this.tea = tea
     },
     numChange(value) {
       this.sendNum()
-    },
-    getOrderId() {
-      this.$axios.get('/api/all')
-        .then(res => {
-          const dishes = []
-          const { num, orderList } = res.result
-          orderList.forEach(id => {
-            const target = this.dishes.find(cfg => id === cfg.id)
-            if (target)
-              dishes.push(target)
-          })
-          this.selected = dishes
-          this.num = num
-        })
     },
     sendOrder(item) {
       this.$axios.post('/api/order', { id: item.id })
@@ -157,6 +144,10 @@ export default {
 
     sendNum() {
       this.$axios.post('/api/num', { num: this.num })
+    },
+
+    sendTea() {
+      this.$axios.post('/api/tea', { tea: this.tea })
     },
 
     clearOrder() {

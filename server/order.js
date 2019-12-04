@@ -1,12 +1,14 @@
 class Order {
   constructor() {
     this.num = 0
+    this.tea = ''
     this.orderList = []
   }
 
   getAll() {
     return {
       num: this.num,
+      tea: this.tea,
       orderList: this.orderList
     }
   }
@@ -18,6 +20,10 @@ class Order {
 
   setNum(num) {
     this.num = Number(num)
+  }
+
+  setTea(tea) {
+    this.tea = tea
   }
 
   receiveOrder(id) {
