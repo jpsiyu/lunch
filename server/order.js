@@ -3,18 +3,21 @@ class Order {
     this.num = 0
     this.tea = ''
     this.orderList = []
+    this.remark = ''
   }
 
   getAll() {
     return {
       num: this.num,
       tea: this.tea,
-      orderList: this.orderList
+      orderList: this.orderList,
+      remark: this.remark
     }
   }
 
   clearAll() {
     this.num = 0
+    this.remark = ''
     this.orderList = []
   }
 
@@ -24,6 +27,10 @@ class Order {
 
   setTea(tea) {
     this.tea = tea
+  }
+
+  setRemark(remark) {
+    this.remark = remark
   }
 
   receiveOrder(id) {

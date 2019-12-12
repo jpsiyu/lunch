@@ -59,6 +59,13 @@ app.post('/api/tea', (req, res) => {
   app.socketMgr.broadcast('all', app.order.getAll())
 })
 
+app.post('/api/remark', (req, res) => {
+  const remark = req.body.remark
+  app.order.setRemark(remark)
+  res.send(serverMsg('ok', '', ''))
+  app.socketMgr.broadcast('all', app.order.getAll())
+})
+
 /**
  * websocket
  */

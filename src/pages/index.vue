@@ -1,27 +1,28 @@
 <template>
   <div class="home">
     <div class="home-left">
+      <el-button class="home-clear" @click="clearOrder" type="danger">清空</el-button>
       <el-form label-width="50px" label-position="top">
-        <el-form-item label="已定:">
+        <el-form-item label="订单:">
           <div class="orders">
             <div class="order" v-for="(item, index) in selected" :key="item.id">
               <span>{{index+1}}</span>
               <span>{{item.name}}</span>
-              <span>{{item.price}}</span>
-              <span>{{item.vipPrice}}</span>
+              <span v-show="price">{{item.price}}</span>
+              <span v-show="price">{{item.vipPrice}}</span>
               <i class="order-remove el-icon-remove" @click="sendOrder(item)"></i>
             </div>
             <div class="order" v-show="num">
               <span>{{selected.length+1}}</span>
               <span>茶位</span>
-              <span>{{3 * num}}</span>
-              <span>{{3 * num}}</span>
+              <span v-show="price">{{3 * num}}</span>
+              <span v-show="price">{{3 * num}}</span>
             </div>
             <div class="order" v-show="num">
               <span>{{selected.length+2}}</span>
               <span>米饭</span>
-              <span>{{3 * num}}</span>
-              <span>{{3 * num}}</span>
+              <span v-show="price">{{3 * num}}</span>
+              <span v-show="price">{{3 * num}}</span>
             </div>
             <span v-if="selected.length === 0 && num === 0">暂无</span>
           </div>
@@ -35,20 +36,29 @@
           <el-radio v-model="tea" label="1" @change="sendTea">普洱</el-radio>
           <el-radio v-model="tea" label="2" @change="sendTea">铁观音</el-radio>
         </el-form-item>
-        <el-form-item label="VIP:">
-          <el-switch v-model="vip"></el-switch>
+        <el-form-item label="备注:">
+          <el-input
+            class="home-remark"
+            type="textarea"
+            :rows="3"
+            placeholder="添加备注"
+            v-model="remark"
+            @blur="handleRemark"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="价格:">
+          <div class="home-price">
+            <span>总价:</span>
+            <span class="home-total">{{orderTotal | fixed2}}</span>
+            <span>人均:</span>
+            <span class="home-total">{{avg | fixed2}}</span>
+          </div>
+        </el-form-item>
+        <el-form-item label="设置:">
+          <el-checkbox label="vip" v-model="vip"></el-checkbox>
+          <el-checkbox label="price" v-model="price"></el-checkbox>
         </el-form-item>
       </el-form>
-      <el-form :inline="true">
-        <el-form-item label="总价:">
-          <span class="home-total">{{orderTotal | fixed2}}</span>
-        </el-form-item>
-        <el-form-item label="人均:">
-          <span class="home-total">{{avg | fixed2}}</span>
-        </el-form-item>
-      </el-form>
-      <el-button class="home-clear" @click="clearOrder" type="danger">清空</el-button>
-      <Formula />
     </div>
     <div class="home-right">
       <div class="dish" v-for="(item,index) in dishes" :key="index" @click="sendOrder(item)">
@@ -67,99 +77,102 @@
 </template>
 
 <script>
-import Formula from '@/components/Formula'
-import config from '@/scripts/config'
-import io from 'socket.io-client'
+import config from "@/scripts/config";
+import io from "socket.io-client";
 
 export default {
-  components: { Formula },
   data() {
     return {
       vip: true,
+      price: false,
+
       num: 0,
       selected: [],
-      tea: '1'
-    }
+      tea: "1",
+      remark: ""
+    };
   },
   socket: null,
   computed: {
     orderTotal() {
-      let sum = 0
+      let sum = 0;
       this.selected.forEach(e => {
-        this.vip
-          ? sum += e.vipPrice
-          : sum += e.price
-      })
-      sum += this.num * 6
-      return sum
+        this.vip ? (sum += e.vipPrice) : (sum += e.price);
+      });
+      sum += this.num * 6;
+      return sum;
     },
     dishes() {
-      return config.dishes
+      return config.dishes;
     },
     avg() {
-      const avg = this.num ? this.orderTotal / this.num : this.orderTotal
-      return avg
-    },
+      const avg = this.num ? this.orderTotal / this.num : this.orderTotal;
+      return avg;
+    }
   },
   filters: {
     fixed2(val) {
-      return val.toFixed(2)
+      return val.toFixed(2);
     }
   },
   mounted() {
-    this.initWebSocket()
+    this.initWebSocket();
   },
   methods: {
     initWebSocket() {
-      const socket = io(this.$common.baseURL)
-      socket.on('connect', () => {
-        console.log('connect')
-      })
-      socket.on('disconnect', () => {
-        console.log('disconnect')
-      })
-      socket.on('all', result => {
-        this.handleAll(result)
-      })
-      this.socket = socket
+      const socket = io(this.$common.baseURL);
+      socket.on("connect", () => {
+        console.log("connect");
+      });
+      socket.on("disconnect", () => {
+        console.log("disconnect");
+      });
+      socket.on("all", result => {
+        this.handleAll(result);
+      });
+      this.socket = socket;
     },
     handleAll(result) {
-      const dishes = []
-      const { num, orderList, tea } = result
+      const dishes = [];
+      const { num, orderList, tea, remark } = result;
       orderList.forEach(id => {
-        const target = this.dishes.find(cfg => id === cfg.id)
-        if (target)
-          dishes.push(target)
-      })
-      this.selected = dishes
-      this.num = num
-          this.tea = tea
+        const target = this.dishes.find(cfg => id === cfg.id);
+        if (target) dishes.push(target);
+      });
+      this.selected = dishes;
+      this.num = num;
+      this.tea = tea;
+      this.remark = remark;
     },
     numChange(value) {
-      this.sendNum()
+      this.sendNum();
     },
     sendOrder(item) {
-      this.$axios.post('/api/order', { id: item.id })
+      this.$axios.post("/api/order", { id: item.id });
     },
 
     sendNum() {
-      this.$axios.post('/api/num', { num: this.num })
+      this.$axios.post("/api/num", { num: this.num });
     },
 
     sendTea() {
-      this.$axios.post('/api/tea', { tea: this.tea })
+      this.$axios.post("/api/tea", { tea: this.tea });
     },
 
     clearOrder() {
-      this.$axios.post('/api/clear')
+      this.$axios.post("/api/clear");
     },
 
     isSelected(id) {
-      const target = this.selected.find(e => e.id === id)
-      return target !== undefined
+      const target = this.selected.find(e => e.id === id);
+      return target !== undefined;
     },
+
+    handleRemark() {
+      this.$axios.post("/api/remark", { remark: this.remark });
+    }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -267,5 +280,13 @@ export default {
   position: absolute;
   top: 20px;
   right: 10px;
+}
+
+.home-remark {
+  max-width: 200px;
+}
+
+.home-price span {
+  padding: 0 5px;
 }
 </style>
