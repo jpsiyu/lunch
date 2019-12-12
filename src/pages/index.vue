@@ -84,7 +84,7 @@ export default {
   data() {
     return {
       vip: true,
-      price: false,
+      price: true,
 
       num: 0,
       selected: [],
